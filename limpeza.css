@@ -1,0 +1,83 @@
+/* limpeza.css */
+
+/* =========================================
+   1. ERRADICAÇÃO TOTAL DOS SHORTS
+========================================= */
+
+/* Oculta as prateleiras horizontais de Shorts */
+ytd-rich-shelf-renderer[is-shorts],
+ytd-reel-shelf-renderer,
+ytd-rich-section-renderer:has(*[is-shorts]) {
+    display: none !important;
+}
+
+/* Oculta Shorts individuais que tentam se disfarçar no meio dos vídeos normais nas inscrições */
+ytd-rich-item-renderer:has(a[href^="/shorts/"]),
+ytd-grid-video-renderer:has(a[href^="/shorts/"]) {
+    display: none !important;
+}
+
+/* Oculta os botões "Shorts" de todos os menus laterais */
+a[title="Shorts"],
+ytd-mini-guide-entry-renderer[aria-label="Shorts"],
+ytd-guide-entry-renderer:has(a[title="Shorts"]) {
+    display: none !important;
+}
+
+/* =========================================
+   2. REMOÇÃO DO BOTÃO INÍCIO (HOME)
+========================================= */
+
+/* Arranca o botão "Início" / "Página inicial" pela raiz */
+a[title="Início"], a[title="Página inicial"], a[title="Home"],
+ytd-guide-entry-renderer:has(a[title="Início"]),
+ytd-guide-entry-renderer:has(a[title="Página inicial"]),
+ytd-guide-entry-renderer:has(a[title="Home"]),
+ytd-mini-guide-entry-renderer[aria-label="Início"],
+ytd-mini-guide-entry-renderer[aria-label="Página inicial"],
+ytd-mini-guide-entry-renderer[aria-label="Home"] {
+    display: none !important;
+}
+
+/* =========================================
+   3. LIMPEZA DA PÁGINA DE INSCRIÇÕES E VÍDEOS
+========================================= */
+
+/* Remove a barra de filtros do topo ("Mais recentes", "Hoje", etc) para um visual purista */
+ytd-feed-filter-chip-bar-renderer {
+    display: none !important;
+}
+
+/* Remove postagens em texto/imagem da comunidade que poluem a grade de vídeos */
+ytd-rich-section-renderer:has(ytd-post-renderer) {
+    display: none !important;
+}
+
+/* Oculta a barra lateral de recomendados enquanto você assiste a um vídeo */
+#secondary {
+    display: none !important;
+}
+
+/* Oculta a parede de vídeos recomendados que aparece quando um vídeo acaba */
+.ytp-endscreen-content {
+    display: none !important;
+}
+
+/* =========================================
+   4. REMOÇÃO DOS FILTROS ("MAIS RELEVANTES", ETC)
+========================================= */
+
+/* Remove a barra suspensa de seleção (Mais relevantes / Mais recentes) */
+ytd-sub-feed-selector-renderer {
+    display: none !important;
+}
+
+/* Garante que a barra de chips (Hoje, Não assistidos) continue oculta */
+ytd-feed-filter-chip-bar-renderer {
+    display: none !important;
+}
+
+/* Remove todo o espaço do cabeçalho da grade, puxando os vídeos para cima */
+#header.ytd-rich-grid-renderer {
+    display: none !important;
+}

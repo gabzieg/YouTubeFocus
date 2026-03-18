@@ -1,0 +1,15 @@
+{
+  "manifest_version": 3,
+  "name": "YouTube Focus",
+  "version": "1.0",
+  "description": "Remove Shorts, barra recomendações e força a página de inscrições.",
+ 
+  "content_scripts": [
+    {
+      "matches": ["*://*.youtube.com/*"],
+      "js": ["redirecionar.js"],
+      "css": ["limpeza.css"],
+      "run_at": "document_start"
+    }
+  ]
+}
