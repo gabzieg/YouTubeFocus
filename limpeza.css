@@ -6,21 +6,32 @@
 
 /* Oculta as prateleiras horizontais de Shorts */
 ytd-rich-shelf-renderer[is-shorts],
+ytd-rich-shelf-renderer:has(a[href^="/shorts/"]),
 ytd-reel-shelf-renderer,
-ytd-rich-section-renderer:has(*[is-shorts]) {
+ytd-rich-section-renderer:has(*[is-shorts]),
+ytd-rich-section-renderer:has(a[href^="/shorts/"]),
+ytd-rich-section-renderer:has(ytd-reel-item-renderer),
+ytd-shelf-renderer:has(a[href^="/shorts/"]),
+ytd-horizontal-card-list-renderer:has(a[href^="/shorts/"]) {
     display: none !important;
 }
 
-/* Oculta Shorts individuais que tentam se disfarçar no meio dos vídeos normais nas inscrições */
+/* Oculta Shorts individuais que tentam se disfarçar no meio dos vídeos normais nas inscrições e pesquisas */
 ytd-rich-item-renderer:has(a[href^="/shorts/"]),
-ytd-grid-video-renderer:has(a[href^="/shorts/"]) {
+ytd-rich-item-renderer:has(ytd-shorts-lockup-view-model),
+ytd-grid-video-renderer:has(a[href^="/shorts/"]),
+ytd-video-renderer:has(a[href^="/shorts/"]),
+ytd-compact-video-renderer:has(a[href^="/shorts/"]) {
     display: none !important;
 }
 
 /* Oculta os botões "Shorts" de todos os menus laterais */
 a[title="Shorts"],
+a[title^="Shorts"],
 ytd-mini-guide-entry-renderer[aria-label="Shorts"],
-ytd-guide-entry-renderer:has(a[title="Shorts"]) {
+ytd-mini-guide-entry-renderer:has(a[href^="/shorts/"]),
+ytd-guide-entry-renderer:has(a[title="Shorts"]),
+ytd-guide-entry-renderer:has(a[href^="/shorts/"]) {
     display: none !important;
 }
 

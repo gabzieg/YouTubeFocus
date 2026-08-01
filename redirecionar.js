@@ -1,31 +1,54 @@
 // redirecionar.js
 
+let isRedirectEnabled = true; // Padrão
+
+// Carrega o estado inicial e executa a verificação
+chrome.storage.local.get(['redirectEnabled'], (result) => {
+    if (result.redirectEnabled !== undefined) {
+        isRedirectEnabled = result.redirectEnabled;
+    }
+    forcarInscricoes();
+});
+
+// Escuta mudanças no storage feitas pelo popup
+chrome.storage.onChanged.addListener((changes, namespace) => {
+    if (namespace === 'local' && changes.redirectEnabled !== undefined) {
+        isRedirectEnabled = changes.redirectEnabled.newValue;
+    }
+});
+
 // 1. Função de redirecionamento bruto
-function forcarInscricoes() {
-    if (window.location.pathname === "/" || window.location.pathname === "") {
+function forcarInscricoes(event) {
+    if (!isRedirectEnabled) return;
+
+    // Se o roteador interno do YouTube tentar te mandar para a home ('/') ou para um Short, ele bloqueia na hora
+    if (event && event.detail && (event.detail.url === '/' || event.detail.url === '' || event.detail.url.startsWith('/shorts/'))) {
+        window.location.replace("/feed/subscriptions");
+        return;
+    }
+
+    // Verificação padrão da URL atual
+    if (window.location.pathname === "/" || window.location.pathname === "" || window.location.pathname.startsWith("/shorts/")) {
         window.location.replace("/feed/subscriptions");
     }
 }
 
-// Executa assim que a página abre
-forcarInscricoes();
+// 2. O "Vigia": Escuta os eventos nativos de navegação do YouTube
+document.addEventListener('yt-navigate-start', forcarInscricoes);
 
-// 2. O "Vigia": Como o YouTube não recarrega a página, precisamos vigiar as mudanças
-let urlAtual = window.location.href;
+// 3. O Interceptador de Cliques: Bloqueia o clique no logotipo antes que o YouTube processe
+document.addEventListener('click', (e) => {
+    if (!isRedirectEnabled) return;
 
-setInterval(() => {
-    // Se a URL tentar mudar para a home, ele bloqueia e manda para inscrições
-    if (window.location.href !== urlAtual) {
-        urlAtual = window.location.href;
-        forcarInscricoes();
-    }
+    const link = e.target.closest('a');
+    if (!link) return;
     
-    // 3. "Hackeia" o logotipo do YouTube
-    // Procura todos os ícones do YouTube na tela e troca o destino deles
-    const logos = document.querySelectorAll('a#logo');
-    logos.forEach(logo => {
-        if (logo.getAttribute('href') === '/') {
-            logo.setAttribute('href', '/feed/subscriptions');
-        }
-    });
-}, 500); // Verifica a cada meio segundo
+    const href = link.getAttribute('href') || '';
+    
+    // Se você clicou no logo ou em qualquer link que leve para a home ou Shorts
+    if (href === '/' || href.startsWith('/shorts/') || link.id === 'logo' || link.closest('#logo')) {
+        e.preventDefault(); // Cancela o comportamento padrão
+        e.stopPropagation(); // Impede o YouTube de ficar sabendo desse clique
+        window.location.replace('/feed/subscriptions');
+    }
+}, true); // O 'true' faz o evento ser capturado ANTES do código do próprio YouTube
