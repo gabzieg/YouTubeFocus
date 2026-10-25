@@ -1,41 +1,76 @@
-# YouTube Focus 🎯
+<p align="center">
+  <img src="icon128.png" alt="YouTube Focus Logo" width="80" height="80" />
+</p>
 
-**YouTube Focus** é uma extensão para navegadores baseados em Chromium que remove distrações do YouTube: Shorts, recomendações da home e força a página de inscrições como ponto de partida.
+<h1 align="center">YouTube Focus</h1>
 
-*"Seu tempo não é negociável. Foco no que importa."*
+<p align="center">
+  <strong>Reclaim your attention on YouTube. Block Shorts, hide algorithmic home feed traps, and start directly on your Subscriptions.</strong>
+</p>
 
-## 🚀 Funcionalidades
+<p align="center">
+  <img src="https://img.shields.io/badge/Manifest-V3-FF0000?logo=youtube&logoColor=white" alt="Manifest V3" />
+  <img src="https://img.shields.io/badge/Browser-Chrome_%7C_Brave_%7C_Edge-34A853" alt="Supported Browsers" />
+  <img src="https://img.shields.io/badge/Zero_Tracking-100%25_Local-2EA043" alt="100% Local" />
+  <img src="https://img.shields.io/badge/License-MIT-blue" alt="MIT License" />
+</p>
 
-- **Bloqueio de Shorts:** Oculta prateleiras, itens individuais e botões de menu que levam a `/shorts/`.
-- **Redirecionamento forçado:** Home (`/`) e qualquer tentativa de navegação pra Shorts são redirecionadas pra `/feed/subscriptions` — inclusive clique no logotipo.
-- **Painel de controle:** Popup com toggle pra ativar/desativar o redirecionamento sem precisar desabilitar a extensão inteira.
+---
 
-## 🛠️ Tecnologias Utilizadas
+## 💡 Why YouTube Focus?
 
-- **JavaScript (Vanilla):** Content script reagindo a `yt-navigate-start` (SPA routing do YouTube) e interceptação de cliques em fase de captura.
-- **CSS:** Seletores `:has()` pra ocultar Shorts disfarçados nos componentes nativos do YouTube.
-- **Chrome Extension API:** Manifest V3, `storage` local pra persistir a preferência do usuário.
+> *"Your time is non-negotiable. Focus on what matters."*
 
-## 📦 Como Instalar e Testar Localmente
+You open YouTube to watch **one** specific tutorial or check a creator you actually subscribe to—and 45 minutes later, you're trapped in an infinite loop of **YouTube Shorts** and algorithmic home-page clickbait.
 
-1. Clone ou baixe este repositório.
-2. Abra `chrome://extensions/` (ou `edge://extensions/` no Edge).
-3. Ative o **Modo do desenvolvedor**.
-4. Clique em **Carregar sem compactação** e selecione a pasta do projeto.
-5. Abra o YouTube — Shorts somem e a home redireciona pra inscrições.
+**YouTube Focus** turns YouTube from an attention slot machine back into an intentional tool. It strips out Shorts across the entire platform and automatically routes you to your **Subscriptions feed** (`/feed/subscriptions`) whenever you open YouTube or click the YouTube logo.
 
-## 📝 Changelog
+---
 
-### v1.5
-- Bloqueio de Shorts expandido: cobre pesquisa, grid de vídeos e menus de navegação (antes só pegava a home e as inscrições).
-- Redirecionamento agora reage ao roteador interno do YouTube (`yt-navigate-start`) em vez de checar a URL a cada 500ms.
-- Interceptação de clique no logotipo e em qualquer link pra Shorts, cancelando a navegação antes do YouTube processar.
-- Popup com toggle pra ligar/desligar o redirecionamento sem desativar a extensão.
-- Ícones da extensão adicionados (16/32/48/128).
+## ✨ What It Proposes & How It Helps You
 
-### v1.0
-- Primeira versão: remoção de Shorts e redirecionamento básico pra inscrições via polling de URL.
+- 🚫 **Complete Shorts Elimination:** Hides Shorts shelves, sidebar buttons, search result carousels, and disguised `/shorts/` video cards before they even render.
+- 🧭 **Intentional Default Destination:** Opening `youtube.com`, clicking the top-left YouTube logo, or attempting to open a `/shorts/` link automatically redirects you to `/feed/subscriptions`—so you only see videos from channels you chose to follow.
+- ⚡ **Zero-Lag SPA Interception:** Instead of slow URL polling, YouTube Focus hooks directly into YouTube's internal single-page router (`yt-navigate-start`) and capture-phase click listeners, preventing distractions before the page transitions.
+- 🎛️ **One-Click Control Popup:** Need to temporarily browse normally? Click the extension icon in your toolbar to toggle redirection on or off instantly without disabling the extension.
 
-## 📄 Licença
+---
 
-MIT — veja [LICENSE](LICENSE).
+## ⚡ Install in 60 Seconds (No Coding Required)
+
+Works on **Google Chrome**, **Brave**, **Microsoft Edge**, **Vivaldi**, and **Opera**:
+
+1. **Download this repository:**
+   - Click the green **Code** button above and select **Download ZIP** (then unzip it), *or* clone via terminal:
+     ```bash
+     git clone https://github.com/gabzieg/YouTubeFocus.git
+     ```
+2. **Open your browser's Extensions page:**
+   - Chrome: `chrome://extensions/`
+   - Brave: `brave://extensions/`
+   - Edge: `edge://extensions/`
+3. **Enable Developer Mode:** Flip the **Developer mode** switch in the top-right corner.
+4. **Load the Extension:** Click **Load unpacked** (top-left) and select the `YouTubeFocus` folder.
+5. **Open [youtube.com](https://www.youtube.com):** Shorts are gone, and you'll land straight on your Subscriptions feed!
+
+---
+
+## 🛠️ How It Works Under the Hood
+
+| File | Role |
+| :--- | :--- |
+| [`manifest.json`](manifest.json) | Manifest V3 definition injecting scripts at `document_start` so distractions never flash on screen. |
+| [`redirecionar.js`](redirecionar.js) | Listens to YouTube's custom `yt-navigate-start` SPA event and capture-phase link clicks to reroute `/` and `/shorts/*` to `/feed/subscriptions`. |
+| [`limpeza.css`](limpeza.css) | Uses modern CSS `:has()` relational selectors to surgically hide Shorts shelves, navigation tabs, and grid items across Home, Search, and Channel pages. |
+| [`popup.html`](popup.html) / [`popup.js`](popup.js) | Minimalist dark-mode control panel syncing user toggle state via `chrome.storage.local`. |
+
+---
+
+## 📝 Release Highlights
+
+- **v1.5:** Expanded Shorts removal across search results and video grids; replaced 500ms URL polling with instant `yt-navigate-start` SPA event interception and capture-phase logo click routing; added quick-toggle popup UI.
+- **v1.0:** Initial release with Shorts hiding and basic Subscriptions redirection.
+
+## 📄 License
+
+Distributed under the **MIT License** — see [`LICENSE`](LICENSE) for details.
